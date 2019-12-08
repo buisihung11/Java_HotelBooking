@@ -9,6 +9,8 @@ import com.cart.BookingCart;
 import com.opensymphony.xwork2.ActionContext;
 import java.util.Map;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.ExceptionMapping;
+import org.apache.struts2.convention.annotation.ExceptionMappings;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
@@ -18,24 +20,30 @@ import org.apache.struts2.convention.annotation.Results;
 @ResultPath(value = "/")
 @Action("updateItemInCart")
 @Results({
-    @Result(name = "success" , location = "userCart.jsp", type = "redirect"),
-    @Result(name = "fail" , location = "userCart.jsp", type = "redirect" , 
+    @Result(name = "success", location = "userCart.jsp", type = "redirect")
+    ,
+    @Result(name = "fail", location = "userCart.jsp", type = "redirect",
             params = {
-                "updateFailMsg" , "Something wrong!"
+                "updateFailMsg", "Something wrong!"
             })
+    ,
+        @Result(name = "input", location = "userCart.jsp", type = "redirect",
+            params = {
+                "updateFailMsg", "Something wrong!"
+            })
+})
+@ExceptionMappings({
+    @ExceptionMapping(exception = "java.lang.NoSuchMethodException", result = "input")
 })
 public class UpdateCartAction {
 
     //FOR UPDATE
-
     private int updateQuantity;
     private int updateRoomId;
-
 
     public UpdateCartAction() {
     }
 
-    
     public String execute() throws Exception {
         Map session = ActionContext.getContext().getSession();
         boolean updateSuccess = true;
@@ -43,8 +51,8 @@ public class UpdateCartAction {
 
         if (cart != null) {
             //Check quantity
-            if (cart.getCartItems() == null || cart.getCartItems().get(updateRoomId) == null 
-                     || updateQuantity > cart.getCartItems().get(updateRoomId).getMaxQuantity() ) {
+            if (cart.getCartItems() == null || cart.getCartItems().get(updateRoomId) == null
+                    || updateQuantity > cart.getCartItems().get(updateRoomId).getMaxQuantity() || updateQuantity == 0) {
                 updateSuccess = false;
             } else {
                 //update room
@@ -55,8 +63,6 @@ public class UpdateCartAction {
 
         return updateSuccess ? "success" : "fail";
     }
-
-
 
     public int getUpdateQuantity() {
         return updateQuantity;
@@ -74,7 +80,4 @@ public class UpdateCartAction {
         this.updateRoomId = updateRoomId;
     }
 
-
-    
-    
 }

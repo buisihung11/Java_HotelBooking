@@ -172,31 +172,39 @@
             $(".inputDate").each(function () {
                 console.log(this);
                 $(this).datepicker({
-                    dateFormat: "yy-mm-dd"
+                    dateFormat: "yy-mm-dd",
+                    minDate: 0
                 });
             })
             $(".addToCartForm").on("submit", function (e) {
                 //if cart has booked difference hotel
                 //get user confirm to update the cart
-            <s:if test="%{#cart != null &&  #cart.hotelID != hotelID}">
-                var confirmUpdate = confirm("Would you like to remove your current cart?");
-
-                if (!confirmUpdate) {
-                    e.preventDefault();
+                var checkInInput = $(this).find("input[name=checkinDate]").val();
+                var checkOutInput = $(this).find("input[name=checkoutDate]").val();
+                var needConfirm = false;
+                //KHAC HOTEL
+            <s:if test="%{#cart != null}">
+                <s:if test="%{#cart.hotelID != hotelID }">
+                needConfirm = true;
+                </s:if>
+                if (checkInInput != '<s:property value="#cart.checkInDate" />' || checkOutInput != '<s:property value="#cart.checkInDate" />') {
+                    needConfirm = true;
                 }
             </s:if>
 
+                if (needConfirm) {
+                    var confirmUpdate = confirm("Would you like to remove your current cart?");
+                    if (!confirmUpdate) {
+                        e.preventDefault();
+                    }
+                }
 
                 console.log("HANDLE DATE FORM")
-                var checkInInput = $(this).find("input[name=checkinDate]").val();
-                var checkOutInput = $(this).find("input[name=checkoutDate]").val();
                 var dateDifference = $(this).find("input[name=dateDifference]");
                 var date1 = new Date(checkInInput);
                 var date2 = new Date(checkOutInput);
-
 // To calculate the time difference of two dates 
                 var Difference_In_Time = date2.getTime() - date1.getTime();
-
 // To calculate the no. of days between two dates 
                 var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24) + 1;
                 dateDifference.val(Difference_In_Days);

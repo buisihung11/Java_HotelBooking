@@ -10,6 +10,8 @@ import com.cart.RoomCartItem;
 import com.opensymphony.xwork2.ActionContext;
 import java.util.Map;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.ExceptionMapping;
+import org.apache.struts2.convention.annotation.ExceptionMappings;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
@@ -41,7 +43,21 @@ import org.apache.struts2.convention.annotation.Results;
                 "checkoutDate", "${checkoutDate}",
                 "amountRoom", "${amountRoom}",
                 "failMsg", "Not enough room!"
+            }),
+        @Result(name = "input",
+            type = "redirectAction",
+            params = {
+                "namespace", "/",
+                "actionName", "detailPage",
+                "hotelID", "${hotelID}",
+                "checkinDate", "${checkinDate}",
+                "checkoutDate", "${checkoutDate}",
+                "amountRoom", "${amountRoom}",
+                "failMsg", "Soemthing wrong"
             })
+})
+@ExceptionMappings({
+    @ExceptionMapping(exception = "java.lang.NoSuchMethodException", result = "input")
 })
 public class AddToCartAction {
 
@@ -70,7 +86,7 @@ public class AddToCartAction {
         //Neu nhu hotelId khac voi trong cart da co
         //DA CONFIRM O CLIENT
         //THUC HIEN NEW CART
-        if (maxQuantity < bookingQuantity) {
+        if (maxQuantity < bookingQuantity || bookingQuantity == 0) {
             addSuccess = false;
         } else if (cart == null || cart.getHotelID() != hotelID) {
             cart = new BookingCart();
