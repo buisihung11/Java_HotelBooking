@@ -20,7 +20,8 @@ Stripe.jar from Stripe for checkout with card online
 ```
 
 
-##Checkout flow
+## Checkout flow
+
 [Contribution guidelines for this project]()
 
 ## Deployment
