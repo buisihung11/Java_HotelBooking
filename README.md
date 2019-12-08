@@ -1,7 +1,8 @@
 # Java_HotelBooking
 
-An Java web app build with MVC2 model develop a simple Ecommerce website to sell  books. 
-With use [Stripe](https://stripe.com/) for online payments.
+A website to service booking hotel online with use STRUTS 2 framework.
+Also using JavaMailSender to send email for customer to confirm their booking
+
 
 ## Getting Started
 
@@ -11,18 +12,17 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 ```
-Create account on Stripe.com to get public key(use on client ) and secret key (for server)
+This app use GMAIL provider to send email. You need to get an app password for sending email.
 ```
 
 ```
 JDBC driver for connect database
-Stripe.jar from Stripe for checkout with card online
+javax.mail.jar for sending mail
 ```
 
 
-## Checkout flow
+## Send confirm mail sequence
 
-[Contribution guidelines for this project]()
 
 ## Deployment
 
