@@ -6,7 +6,6 @@
 package com.areaDAO;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,35 +19,42 @@ import utils.DBUtils;
  * @author Admin
  */
 public class AreaDAO {
-    public Map<Integer,String> getAreas() throws SQLException, NamingException{
-        Map<Integer,String> areas = new HashMap<>();
-        
+
+    public Map<Integer, String> getAreas() throws SQLException, NamingException {
+        Map<Integer, String> areas = new HashMap<>();
+
         Connection c = null;
         Statement stm = null;
         ResultSet rs = null;
-        
-        try{
-            c= DBUtils.makeConnection();
+
+        try {
+            c = DBUtils.makeConnection();
             String sql = "SELECT aID , aName "
                     + "FROM tbl_Area ";
             stm = c.createStatement();
             rs = stm.executeQuery(sql);
-            
-            while(rs.next()){
-                
+
+            while (rs.next()) {
+
                 int aID = rs.getInt("aID");
                 String aName = rs.getString("aName");
-                
+
                 areas.put(aID, aName);
-                
+
             }
-            
-        }finally{
-            if(rs != null) rs.close();
-            if(stm != null) stm.close();
-            if(c != null) c.close();
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (c != null) {
+                c.close();
+            }
         }
-        
+
         return areas;
     }
 }

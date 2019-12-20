@@ -181,13 +181,17 @@
                 //get user confirm to update the cart
                 var checkInInput = $(this).find("input[name=checkinDate]").val();
                 var checkOutInput = $(this).find("input[name=checkoutDate]").val();
+                console.log(checkInInput);
+                console.log(checkOutInput);
                 var needConfirm = false;
                 //KHAC HOTEL
             <s:if test="%{#cart != null}">
                 <s:if test="%{#cart.hotelID != hotelID }">
+//                console.log('Khac hotel');
                 needConfirm = true;
                 </s:if>
-                if (checkInInput != '<s:property value="#cart.checkInDate" />' || checkOutInput != '<s:property value="#cart.checkInDate" />') {
+                if (checkInInput != '<s:property value="#cart.checkInDate" />' || checkOutInput != '<s:property value="#cart.checkOutDate" />') {
+//                    console.log('Khac ngay');
                     needConfirm = true;
                 }
             </s:if>
@@ -198,8 +202,9 @@
                         e.preventDefault();
                     }
                 }
+                
 
-                console.log("HANDLE DATE FORM")
+//                console.log("HANDLE DATE FORM")
                 var dateDifference = $(this).find("input[name=dateDifference]");
                 var date1 = new Date(checkInInput);
                 var date2 = new Date(checkOutInput);
@@ -208,7 +213,7 @@
 // To calculate the no. of days between two dates 
                 var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24) + 1;
                 dateDifference.val(Difference_In_Days);
-                console.log("Date difference: " + Difference_In_Days)
+//                console.log("Date difference: " + Difference_In_Days)
                 if (checkInInput > checkOutInput) {
                     $(this).find(".invalidSearchDateMsg").text('NOT VALID INPUT ')
                     e.preventDefault();

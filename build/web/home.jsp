@@ -25,9 +25,15 @@
 
             <s:if test="%{#user != null}">
                 <h2>Welcome , <strong><s:property value="#user.fullName" /></strong></h2>
+                <s:if test="%{#user.isAdmin}" >
+                    <a href="admin/getFeedbackHotel" class="px-3 border-right">See feedbacked hotel</a>
+                </s:if>
+                <s:else>
+                    <a href="user/userCart.jsp" class="px-3 border-right">View your cart</a>
+                    <a href="user/searchBooking" class="pl-3">See your bookings has made</a>
+                </s:else>
                 <a href="logout" class="btn btn-success">Log out</a>
-                <a href="user/userCart.jsp" class="px-3 border-right">View your cart</a>
-                <a href="user/searchBooking" class="pl-3">See your bookings has made</a>
+
             </s:if>
             <s:else>
 

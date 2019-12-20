@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NamingException;
@@ -21,7 +22,52 @@ import utils.DBUtils;
  */
 public class HotelDAO {
 
-    
+    public List<HotelDTO> getHotelHasFeedback() throws NamingException, SQLException {
+        List<HotelDTO> results = null;
+        Connection c = null;
+        Statement stm = null;
+        ResultSet rs = null;
+
+        try {
+            c = DBUtils.makeConnection();
+            String sql = "select  hID, hName, hAreaID, hDescription "
+                    + "from tbl_Hotel as h inner join ( Select distinct bHotelId "
+                    + "from tbl_BookingDetail inner join tbl_Booking on bdBookingID = bID, tbl_Hotel "
+                    + "where bdFeedback is not null and bdFeedback != '' ) as feedbackedHotel on h.hID = feedbackedHotel.bHotelId ";
+
+            stm = c.createStatement();
+
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                if (results == null) {
+                    results = new ArrayList<>();
+                }
+
+                int hID = rs.getInt("hID");
+
+                int hAreaID = rs.getInt("hAreaID");
+                String hName = rs.getString("hName");
+                String hDescription = rs.getString("hDescription");
+
+                HotelDTO hotel = new HotelDTO(hID, hAreaID, hName, hDescription);
+                results.add(hotel);
+            }
+
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (c != null) {
+                c.close();
+            }
+        }
+
+        return results;
+    }
+
     public List<HotelDTO> getAvailableHotel(String checkinDate, String checkoutDate, int amount, String hotelName, int areaID) throws SQLException, NamingException {
         List<HotelDTO> results = null;
         Connection c = null;
@@ -117,6 +163,4 @@ public class HotelDAO {
         return result;
     }
 
-    
- 
 }

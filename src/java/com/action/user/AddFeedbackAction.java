@@ -62,7 +62,6 @@ public class AddFeedbackAction {
         switch (bookingStatus) {
             case BookingDAO.BOOKING_ACTIVE:
                 //cancel booking
-                
                 addSuccess = BOOKING_DETAIL_DAO.addFeedBack(bookingDetailID, feedback);
                 if (!addSuccess) {
                     //was prevented from client
